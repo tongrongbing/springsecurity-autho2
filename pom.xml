@@ -32,7 +32,7 @@
         <commons-lang.version>2.6</commons-lang.version>
         <commons-collections.version>3.2.2</commons-collections.version>
         <commons-io.version>2.6</commons-io.version>
-        <commons-beanutils.version>1.9.3</commons-beanutils.version>
+        <commons-beanutils.version>1.9.4</commons-beanutils.version>
         <!-- 定义版本号, 子模块直接引用-->
         <wenba-security.version>1.0-SNAPSHOT</wenba-security.version>
     </properties>
