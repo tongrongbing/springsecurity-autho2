@@ -1,0 +1,25 @@
+server:
+  port: 8090
+  servlet:
+    context-path: /auth
+
+#redis服务配置
+#Redis数据库索引（默认为0）
+spring:
+  redis:
+    database: 0
+    host: 39.105.50.203
+    port: 6379
+    password:
+    jedis:
+      pool:
+        min-idle: 0
+        max-active: 600
+        max-wait: -1
+        max-idle: 300
+    timeout: 3000
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://39.105.50.203:3306/blog?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: admin
