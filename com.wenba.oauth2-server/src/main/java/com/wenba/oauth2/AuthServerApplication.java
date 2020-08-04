@@ -5,12 +5,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 /**
  * @author：tongrongbing
  * @date：created in 2020/7/19 19:22
- * @description：
+ * @description：认证服务器启动类
  */
 @SpringBootApplication
 public class AuthServerApplication {
     public static void main(String[] args) {
-        System.out.println("=====================");
         SpringApplication.run(AuthServerApplication.class,args);
     }
 }
