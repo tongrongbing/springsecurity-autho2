@@ -41,14 +41,15 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private UserDetailsService customUserDetailsService;
 
     @Autowired
-    private TokenStore tokenStore;
+    private TokenStore tokenStore;  //  令牌管理策略
 
+    // 使用 JDBC 方式管理客户端信息
     @Bean
     public ClientDetailsService jdbcClientDetailsService(){
         return new JdbcClientDetailsService(dataSource);
     }
 
-    @Bean // 授权码管理 存入mysql里
+    @Bean // 授权码管理 存入mysql里，授权码存储到数据库意义不大，因为每次授权时候，都会删除先前的授权码
     public AuthorizationCodeServices jdbcAuthorizationCodeServices(){
         return new JdbcAuthorizationCodeServices(dataSource);
     }
@@ -63,7 +64,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        clients.inMemory()  // 使用内存方式
+       /* clients.inMemory()  // 使用内存方式
                 .withClient("mengxuegu-pc") // 客户端id
                 // 客户端密码，要加密,不然一直要求登录, 获取不到令牌, 而且一定不能被泄露
                 .secret(passwordEncoder.encode("mengxuegu-secret"))
@@ -73,13 +74,20 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                  // 授权范围标识，哪部分资源可访问（all是标识，不是代表所有）
                 .scopes("all")
                 .autoApprove(false) // false 跳转到授权页面手动点击授权，true 不用手动授权，直接响应授权码
-                .redirectUris("http://www.mengxuegu.com/") // 客户端回调地址
+                .redirectUris("http://www.baidu.com/") // 客户端回调地址
                 .accessTokenValiditySeconds(60*60*2)  // 访问令牌的有效期，默认是12小时这里设置为2小时
-                .refreshTokenValiditySeconds(60*60*24)  // 刷新令牌的有效期，默认是30天，这里设置为1天
-        //clients.withClientDetails(jdbcClientDetailsService());
+                .refreshTokenValiditySeconds(60*60*24)  // 刷新令牌的有效期，默认是30天，这里设置为1天*/
+        clients.withClientDetails(jdbcClientDetailsService());
         ;
     }
 
+    /**
+     * @author: tongrongbing
+     * @description:    认证服务端点配置
+     * @time: 2020/8/4 11:36 上午
+     * @param endpoints
+     * @return void
+     */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         // 密码模式要设置认证管理器

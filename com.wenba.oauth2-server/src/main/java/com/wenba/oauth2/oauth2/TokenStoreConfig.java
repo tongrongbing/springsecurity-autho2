@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 /**
  * @author：tongrongbing
  * @date：created in 2020/7/19 23:11
- * @description：
+ * @description： token配置策略-------> redis存储和jdbc存储方式
  */
 @Configuration
 public class TokenStoreConfig {

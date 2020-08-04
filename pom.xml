@@ -10,6 +10,7 @@
     <modules>
         <module>com.wenba.common</module>
         <module>com.wenba.oauth2-server</module>
+        <module>com.wenba.oauth2-core</module>
     </modules>
     <packaging>pom</packaging>
 
