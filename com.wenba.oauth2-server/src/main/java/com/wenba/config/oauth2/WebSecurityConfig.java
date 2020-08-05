@@ -56,6 +56,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+    // 注入密码生成器
     @Bean
     public PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
