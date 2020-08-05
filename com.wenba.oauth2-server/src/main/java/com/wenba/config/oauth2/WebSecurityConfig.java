@@ -25,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private FormAuthenticationConfig formAuthenticationConfig;
 
-    @Override
+    /*@Override
     protected void configure(HttpSecurity http) throws Exception {
         formAuthenticationConfig.configure(http); // 表单认证
 
@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .csrf().disable();
-    }
+    }*/
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
