@@ -102,7 +102,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.wenba.oauth2.AuthServerApplication</mainClass>
+                    <mainClass>AuthServerApplication</mainClass>
                 </configuration>
             </plugin>
         </plugins>

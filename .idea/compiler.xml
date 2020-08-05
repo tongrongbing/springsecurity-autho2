@@ -6,11 +6,13 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="com.wenba.oauth2-core" />
         <module name="com.wenba.common" />
         <module name="com.wenba.oauth2-server" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="com.wenba.oauth2-core" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">

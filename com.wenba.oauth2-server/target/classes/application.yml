@@ -23,3 +23,6 @@ spring:
     url: jdbc:mysql://39.105.50.203:3306/blog?useUnicode=yes&characterEncoding=UTF-8&useSSL=false
     username: root
     password: admin
+wenba:
+  security:
+

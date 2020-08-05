@@ -1,0 +1,6 @@
+/Users/wenba/IdeaProjects/springsecurity-autho2/com.wenba.oauth2-server/src/main/java/com/wenba/oauth2/AuthServerApplication.java
+/Users/wenba/IdeaProjects/springsecurity-autho2/com.wenba.oauth2-server/src/main/java/com/wenba/oauth2/oauth2/WebSecurityConfig.java
+/Users/wenba/IdeaProjects/springsecurity-autho2/com.wenba.oauth2-server/src/main/java/com/wenba/oauth2/oauth2/SecurityBeanConfig.java
+/Users/wenba/IdeaProjects/springsecurity-autho2/com.wenba.oauth2-server/src/main/java/com/wenba/oauth2/oauth2/TokenStoreConfig.java
+/Users/wenba/IdeaProjects/springsecurity-autho2/com.wenba.oauth2-server/src/main/java/com/wenba/oauth2/oauth2/AuthorizationServerConfig.java
+/Users/wenba/IdeaProjects/springsecurity-autho2/com.wenba.oauth2-server/src/main/java/com/wenba/oauth2/service/CustomUserDetailsService.java
