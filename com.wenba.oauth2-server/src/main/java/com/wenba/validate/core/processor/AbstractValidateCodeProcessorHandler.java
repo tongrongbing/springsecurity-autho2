@@ -1,0 +1,70 @@
+package com.wenba.validate.core.processor;
+
+import com.wenba.enums.ValidateCodeType;
+import com.wenba.validate.core.entity.ValidateCode;
+import com.wenba.validate.core.generator.ValidateCodeGenerator;
+import com.wenba.validate.core.exception.ValidateCodeException;
+import com.wenba.validate.core.repository.ValidateCodeRepository;
+import org.apache.commons.lang.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.request.ServletWebRequest;
+
+import java.util.Map;
+
+/**
+ * @description:
+ * @author: tongrongbing
+ * @date: 2020-08-06 15:31
+ **/
+public abstract class AbstractValidateCodeProcessorHandler<C extends ValidateCode> implements ValidateCodeProcessor {
+
+    /**
+     * 收集系统中所有的 {@link ValidateCodeGenerator} 接口的实现。
+     */
+    @Autowired
+    private Map<String, ValidateCodeGenerator> validateCodeGenerators;
+
+    @Autowired
+    private ValidateCodeRepository redisValidateCodeRepository;
+
+    /**
+     * @author: tongrongbing
+     * @description:   创建验证码，并且保存验证码，并且
+     * @time: 2020/8/8 11:35 上午
+     * @param request
+     * @return void
+     */
+    @Override
+    public void process(ServletWebRequest request) throws Exception {
+        C validateCode = generate(request);
+        save(request, validateCode);
+        send(request, validateCode);
+    }
+
+    private C generate(ServletWebRequest request){
+        String type = getValidateCodeType().toString().toLowerCase();
+        String generatorName = type + ValidateCodeGenerator.class.getSimpleName();
+        ValidateCodeGenerator validateCodeGenerator = validateCodeGenerators.get(generatorName);
+        if (validateCodeGenerator == null) {
+            throw new ValidateCodeException("验证码生成器" + generatorName + "不存在");
+        }
+        return (C) validateCodeGenerator.generate(request);
+    }
+
+    private ValidateCodeType getValidateCodeType(){
+        String type = StringUtils.substringBefore(getClass().getSimpleName(), "CodeProcessor");
+        return ValidateCodeType.valueOf(type.toUpperCase());
+    }
+
+    private void save(ServletWebRequest request,C validateCode){
+        ValidateCode code = new ValidateCode(validateCode.getCode(),validateCode.getExpireTime());
+        redisValidateCodeRepository.save(request,code,getValidateCodeType());
+    }
+
+    public abstract void send(ServletWebRequest request,C validateCode) throws Exception;
+
+    @Override
+    public void validate(ServletWebRequest request) throws Exception {
+
+    }
+}

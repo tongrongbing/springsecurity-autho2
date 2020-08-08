@@ -25,4 +25,7 @@ spring:
     password: admin
 wenba:
   security:
-
+    validateCode:
+      imageCode:
+        width: 70
+        height: 26

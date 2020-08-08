@@ -54,6 +54,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
                                         Authentication authentication) throws IOException, ServletException {
         log.info("登陆成功...........");
         String header = request.getHeader("Authorization");
+        log.info("..........."+header);
         if (header == null || !header.startsWith("Basic ")) {
             throw new UnapprovedClientAuthenticationException("请求头中无client信息");
         }

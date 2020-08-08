@@ -1,0 +1,17 @@
+{
+  "groups": [
+    {
+      "name": "wenba.security",
+      "type": "com.wenba.properties.SecurityProperties",
+      "sourceType": "com.wenba.properties.SecurityProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "wenba.security.validate-code",
+      "type": "com.wenba.properties.ValidateCodeProperties",
+      "sourceType": "com.wenba.properties.SecurityProperties"
+    }
+  ],
+  "hints": []
+}
