@@ -4,10 +4,14 @@ import com.wenba.config.SecurityPropertiesConfig;
 import com.wenba.constants.SecurityConstants;
 import com.wenba.enums.ValidateCodeType;
 import com.wenba.properties.SecurityProperties;
+import com.wenba.validate.core.exception.ValidateCodeException;
+import com.wenba.validate.core.processor.ValidateCodeProcessorHolder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -47,6 +51,11 @@ public class ValidationCodeFilter extends OncePerRequestFilter implements Initia
      */
     private AntPathMatcher pathMatcher = new AntPathMatcher();
 
+    @Autowired
+    private ValidateCodeProcessorHolder validateCodeProcessorHolder;
+
+    @Autowired
+    private AuthenticationFailureHandler failureHandler;
 
     /**
      * @author: tongrongbing
@@ -84,17 +93,16 @@ public class ValidationCodeFilter extends OncePerRequestFilter implements Initia
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         ValidateCodeType type = getValidateCodeType(request);
-        /*if(type != null){
+        if(type != null){
             log.info("校验请求(" + request.getRequestURI() + ")中的验证码,验证码类型" + type);
             try {
-                validateCodeProcessorHolder.findValidateCodeProcessor(type)
-                        .validate(new ServletWebRequest(request, response));
+                validateCodeProcessorHolder.findValidateCodeProcessor(type).validate(new ServletWebRequest(request, response));
                 logger.info("验证码校验通过");
             } catch (ValidateCodeException exception) {
-                authenticationFailureHandler.onAuthenticationFailure(request, response, exception);
+                failureHandler.onAuthenticationFailure(request,response,exception);
                 return;
             }
-        }*/
+        }
         chain.doFilter(request,response);
     }
 
@@ -117,4 +125,6 @@ public class ValidationCodeFilter extends OncePerRequestFilter implements Initia
         }
         return type;
     }
+
+
 }

@@ -1,4 +1,5 @@
-package com.wenba.config;
+package com.wenba.config.oauth2;
+import com.wenba.config.FormAuthenticationConfig;
 import com.wenba.constants.SecurityConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

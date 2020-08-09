@@ -19,6 +19,7 @@ import java.util.Random;
  **/
 @Component("imageValidateCodeGenerator")
 public class ImageValidateCodeGenerator implements ValidateCodeGenerator {
+
     @Autowired
     private SecurityProperties properties;
 

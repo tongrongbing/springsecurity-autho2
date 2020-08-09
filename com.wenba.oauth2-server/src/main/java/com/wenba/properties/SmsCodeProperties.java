@@ -6,7 +6,7 @@ package com.wenba.properties;
  * @date: 2020-08-06 11:19
  **/
 public class SmsCodeProperties {
-    private int length = 6; // 长度
+    private int length = 4; // 长度
 
     private int expiredIn = 60;  // 有效期
 

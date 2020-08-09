@@ -50,4 +50,5 @@ public interface SecurityConstants {
     String REDIS_VALIDATE_CODE_KEY_PREFIX_ = "redis_validate_code_key_";
 
 
+
 }

@@ -12,11 +12,21 @@ public class SecurityProperties {
 
     private ValidateCodeProperties validateCode = new ValidateCodeProperties();
 
+    private SmsProperties sms = new SmsProperties();
+
     public ValidateCodeProperties getValidateCode() {
         return validateCode;
     }
 
     public void setValidateCode(ValidateCodeProperties validateCode) {
         this.validateCode = validateCode;
+    }
+
+    public SmsProperties getSms() {
+        return sms;
+    }
+
+    public void setSms(SmsProperties sms) {
+        this.sms = sms;
     }
 }

@@ -8,6 +8,11 @@
   ],
   "properties": [
     {
+      "name": "wenba.security.sms",
+      "type": "com.wenba.properties.SmsProperties",
+      "sourceType": "com.wenba.properties.SecurityProperties"
+    },
+    {
       "name": "wenba.security.validate-code",
       "type": "com.wenba.properties.ValidateCodeProperties",
       "sourceType": "com.wenba.properties.SecurityProperties"

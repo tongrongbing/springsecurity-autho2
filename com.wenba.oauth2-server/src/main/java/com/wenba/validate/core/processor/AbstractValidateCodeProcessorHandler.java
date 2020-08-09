@@ -7,6 +7,8 @@ import com.wenba.validate.core.exception.ValidateCodeException;
 import com.wenba.validate.core.repository.ValidateCodeRepository;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.ServletRequestBindingException;
+import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
 
 import java.util.Map;
@@ -64,7 +66,32 @@ public abstract class AbstractValidateCodeProcessorHandler<C extends ValidateCod
     public abstract void send(ServletWebRequest request,C validateCode) throws Exception;
 
     @Override
-    public void validate(ServletWebRequest request) throws Exception {
+    public void validate(ServletWebRequest request) {
+        ValidateCodeType codeType = getValidateCodeType();
+        C codeInSession = (C) redisValidateCodeRepository.get(request, codeType);
+        String codeInRequest;
+        try {
+            codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), codeType.getValidateCodeType());
+        } catch (ServletRequestBindingException e) {
+            throw new ValidateCodeException("获取验证码的值失败");
+        }
+
+        if (StringUtils.isBlank(codeInRequest)) {
+            throw new ValidateCodeException(codeType + "请填写验证码");
+        }
+
+        if (codeInSession == null) {
+            throw new ValidateCodeException(codeType + "验证码不存在");
+        }
+
+        if (codeInSession.isExpired()) {
+            redisValidateCodeRepository.remove(request, codeType);
+            throw new ValidateCodeException(codeType + "验证码已过期，请重新获取");
+        }
+        if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
+            throw new ValidateCodeException(codeType + "验证码不正确");
+        }
+        redisValidateCodeRepository.remove(request, codeType);
 
     }
 }

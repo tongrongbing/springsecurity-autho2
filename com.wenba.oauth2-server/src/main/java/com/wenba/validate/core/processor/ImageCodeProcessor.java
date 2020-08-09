@@ -7,7 +7,7 @@ import org.springframework.web.context.request.ServletWebRequest;
 import javax.imageio.ImageIO;
 
 /**
- * @description:
+ * @description:  图片验证码处理器
  * @author: tongrongbing
  * @date: 2020-08-08 11:57
  **/
