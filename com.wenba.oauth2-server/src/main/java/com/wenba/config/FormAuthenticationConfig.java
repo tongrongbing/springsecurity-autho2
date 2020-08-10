@@ -22,6 +22,7 @@ public class FormAuthenticationConfig {
 
     public void configure(HttpSecurity http) throws Exception {
         http.formLogin()
+
                 .loginProcessingUrl(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_FORM)
                 .successHandler(successHandler)
                 .failureHandler(failureHandler);

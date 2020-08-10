@@ -68,7 +68,7 @@ public abstract class AbstractValidateCodeProcessorHandler<C extends ValidateCod
     @Override
     public void validate(ServletWebRequest request) {
         ValidateCodeType codeType = getValidateCodeType();
-        C codeInSession = (C) redisValidateCodeRepository.get(request, codeType);
+        C codeInRedis = (C) redisValidateCodeRepository.get(request, codeType);
         String codeInRequest;
         try {
             codeInRequest = ServletRequestUtils.getStringParameter(request.getRequest(), codeType.getValidateCodeType());
@@ -80,15 +80,15 @@ public abstract class AbstractValidateCodeProcessorHandler<C extends ValidateCod
             throw new ValidateCodeException(codeType + "请填写验证码");
         }
 
-        if (codeInSession == null) {
+        if (codeInRedis == null) {
             throw new ValidateCodeException(codeType + "验证码不存在");
         }
 
-        if (codeInSession.isExpired()) {
+        if (codeInRedis.isExpired()) {
             redisValidateCodeRepository.remove(request, codeType);
             throw new ValidateCodeException(codeType + "验证码已过期，请重新获取");
         }
-        if (!StringUtils.equals(codeInSession.getCode(), codeInRequest)) {
+        if (!StringUtils.equals(codeInRedis.getCode(), codeInRequest)) {
             throw new ValidateCodeException(codeType + "验证码不正确");
         }
         redisValidateCodeRepository.remove(request, codeType);
