@@ -1,5 +1,6 @@
 package com.wenba.config.oauth2;
 import com.wenba.config.FormAuthenticationConfig;
+import com.wenba.config.ValidateCodeSecurityConfig;
 import com.wenba.constants.SecurityConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -23,13 +24,16 @@ public class AuthorizationResourceServerConfig extends ResourceServerConfigurerA
 
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         formAuthenticationConfig.configure(http); // 表单认证
-        http.apply(validateCodeSecurityConfig)
+        http
+                .apply(validateCodeSecurityConfig)
                 .and()
         .authorizeRequests()
-                .antMatchers(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE,"/imooc-signIn.html",
+                .antMatchers(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE,
+                        "/imooc-signIn.html","/auth/authentication/form",
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*").permitAll()
                 .anyRequest()
                 .authenticated()

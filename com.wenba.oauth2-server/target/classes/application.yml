@@ -29,3 +29,12 @@ wenba:
       imageCode:
         width: 70
         height: 26
+    sms:
+      accessKeyID: LTAI4Fuz572L1QyxXYXiScwN
+      accessKeySecret: vqnyZs0MVAUTABdvF6VJDh1nsFHzuB
+      domain: dysmsapi.aliyuncs.com
+      version: 2017-05-25
+      action: SendSms
+      signName: 启航
+      regionId: default
+      templateCode: SMS_173426155

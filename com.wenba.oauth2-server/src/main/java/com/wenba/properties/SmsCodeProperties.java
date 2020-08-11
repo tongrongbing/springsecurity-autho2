@@ -8,7 +8,7 @@ package com.wenba.properties;
 public class SmsCodeProperties {
     private int length = 4; // 长度
 
-    private int expiredIn = 60;  // 有效期
+    private int expiredIn = 100;  // 有效期
 
     private String url;  // 过滤的URL
 

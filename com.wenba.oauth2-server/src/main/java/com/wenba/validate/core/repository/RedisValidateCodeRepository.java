@@ -2,10 +2,13 @@ package com.wenba.validate.core.repository;
 
 import com.wenba.constants.SecurityConstants;
 import com.wenba.enums.ValidateCodeType;
+import com.wenba.service.redis.RedisService;
 import com.wenba.validate.core.entity.ValidateCode;
 import com.wenba.validate.core.exception.ValidateCodeException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.RedisSystemException;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -18,10 +21,11 @@ import java.util.concurrent.TimeUnit;
  * @date: 2020-08-08 17:23
  **/
 @Component("redisValidateCodeRepository")
+@Slf4j
 public class RedisValidateCodeRepository implements ValidateCodeRepository{
 
     @Autowired
-    private RedisTemplate<String,Object> redisTemplate;
+    private RedisService redisService;
 
     /**
      * @author: tongrongbing
@@ -34,7 +38,8 @@ public class RedisValidateCodeRepository implements ValidateCodeRepository{
      */
     @Override
     public void save(ServletWebRequest request, ValidateCode code, ValidateCodeType validateCodeType) {
-        redisTemplate.opsForValue().set(buildKey(request,validateCodeType),code,30, TimeUnit.SECONDS);
+        redisService.addObject(buildKey(request,validateCodeType),code,3600);
+        //redisTemplate.opsForValue().set(buildKey(request,validateCodeType),code,3600, TimeUnit.SECONDS);
     }
 
     /**
@@ -61,7 +66,7 @@ public class RedisValidateCodeRepository implements ValidateCodeRepository{
      */
     @Override
     public ValidateCode get(ServletWebRequest request, ValidateCodeType validateCodeType) {
-        Object value = redisTemplate.opsForValue().get(buildKey(request, validateCodeType));
+        Object value = redisService.getObject(buildKey(request, validateCodeType));
         return value == null ? null : (ValidateCode)value;
     }
 
@@ -75,6 +80,6 @@ public class RedisValidateCodeRepository implements ValidateCodeRepository{
      */
     @Override
     public void remove(ServletWebRequest request, ValidateCodeType codeType) {
-        redisTemplate.delete(buildKey(request,codeType));
+        redisService.del(buildKey(request,codeType));
     }
 }

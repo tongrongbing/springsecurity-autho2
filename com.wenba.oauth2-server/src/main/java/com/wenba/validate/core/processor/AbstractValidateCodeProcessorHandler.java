@@ -14,14 +14,14 @@ import org.springframework.web.context.request.ServletWebRequest;
 import java.util.Map;
 
 /**
- * @description:
+ * @description:  抽象校验码处理器 实现ValidateCodeProcessor，提供抽象发送方法供子类自定义实现
  * @author: tongrongbing
  * @date: 2020-08-06 15:31
  **/
 public abstract class AbstractValidateCodeProcessorHandler<C extends ValidateCode> implements ValidateCodeProcessor {
 
     /**
-     * 收集系统中所有的 {@link ValidateCodeGenerator} 接口的实现。
+     * 收集系统中所有的 {@link ValidateCodeGenerator}接口的实现。
      */
     @Autowired
     private Map<String, ValidateCodeGenerator> validateCodeGenerators;
@@ -31,15 +31,18 @@ public abstract class AbstractValidateCodeProcessorHandler<C extends ValidateCod
 
     /**
      * @author: tongrongbing
-     * @description:   创建验证码，并且保存验证码，并且
+     * @description:   创建验证码，并且保存验证码且发送验证码
      * @time: 2020/8/8 11:35 上午
      * @param request
      * @return void
      */
     @Override
     public void process(ServletWebRequest request) throws Exception {
+        // 生成校验码
         C validateCode = generate(request);
+        // 保存校验码
         save(request, validateCode);
+        // 发送校验码
         send(request, validateCode);
     }
 
@@ -84,7 +87,7 @@ public abstract class AbstractValidateCodeProcessorHandler<C extends ValidateCod
             throw new ValidateCodeException(codeType + "验证码不存在");
         }
 
-        if (codeInRedis.isExpired()) {
+        if (codeInRedis.exist()) {
             redisValidateCodeRepository.remove(request, codeType);
             throw new ValidateCodeException(codeType + "验证码已过期，请重新获取");
         }

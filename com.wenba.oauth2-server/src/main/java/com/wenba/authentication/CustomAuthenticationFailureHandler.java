@@ -1,6 +1,9 @@
 package com.wenba.authentication;
 
+import com.alibaba.fastjson.JSON;
+import com.wenba.result.APIResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
@@ -13,9 +16,8 @@ import java.io.IOException;
 /**
  * @author：tongrongbing
  * @date：created in 2020/7/4 18:46
- * @description：
+ * @description：  自定义失败处理器
  */
-
 @Slf4j
 @Component("failureHandler")
 public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
@@ -23,15 +25,9 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                         AuthenticationException exception) throws IOException, ServletException {
-
-        log.info(".............登录失败..........");
-       /* if (LoginResponseType.JSON.equals(properties.getBrowser().getLoginResponseType())){
-            response.setStatus(HttpStatus.UNAUTHORIZED.value());
-            response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().write(JSON.toJSONString(new ApiResponse(null,401,exception.getMessage())));
-        }else {
-            // 不是json 则继续跳转
-            super.onAuthenticationFailure(request, response, exception);
-        }*/
+        log.info(".............go into failureHandler..........");
+        response.setStatus(HttpStatus.UNAUTHORIZED.value());
+        response.setContentType("application/json;charset=UTF-8");
+        response.getWriter().write(JSON.toJSONString(new APIResponse(HttpStatus.UNAUTHORIZED.value(),exception.getMessage(),null)));
     }
 }

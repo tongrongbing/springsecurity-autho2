@@ -1,6 +1,4 @@
 package com.wenba.validate.core.filter;
-
-import com.wenba.config.SecurityPropertiesConfig;
 import com.wenba.constants.SecurityConstants;
 import com.wenba.enums.ValidateCodeType;
 import com.wenba.properties.SecurityProperties;
@@ -11,37 +9,34 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * @description: 校验码过滤器
  * @author: tongrongbing
  * @date: 2020-08-06 10:24
  **/
-@Component("validationCodeFilter")
 @Slf4j
+@Component("validationCodeFilter")
 public class ValidationCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
     /**
      *配置需要进行校验码校验的URL
      */
-    private Map<String, ValidateCodeType> urlMap = new HashMap<>();
+    private final Map<String, ValidateCodeType> urlMap = new HashMap<>();
 
     @Autowired
     private SecurityProperties securityProperties;
@@ -115,10 +110,11 @@ public class ValidationCodeFilter extends OncePerRequestFilter implements Initia
      */
     private ValidateCodeType getValidateCodeType(HttpServletRequest request){
         ValidateCodeType type = null;
-        if(!StringUtils.equalsIgnoreCase(request.getMethod(),"get")){  // 对post请求进行判断过滤
+        if(!StringUtils.equalsIgnoreCase(request.getMethod(),"get")){
             Set<String> urlSet = urlMap.keySet();
             for(String url : urlSet){
-                if(pathMatcher.match(url,request.getRequestURI())){
+                log.info("request.getRequestURI()"+request.getRequestURI());
+                if(pathMatcher.match(url,request.getServletPath())){
                     type = urlMap.get(url);
                 }
             }

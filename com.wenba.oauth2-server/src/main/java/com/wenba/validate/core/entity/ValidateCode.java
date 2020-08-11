@@ -1,5 +1,10 @@
 package com.wenba.validate.core.entity;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
@@ -12,6 +17,8 @@ public class ValidateCode implements Serializable {
 
     private String code;
 
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    @JsonSerialize(using = LocalDateTimeSerializer.class)
     private LocalDateTime expireTime;
 
     public ValidateCode(){}
@@ -26,7 +33,7 @@ public class ValidateCode implements Serializable {
         this.expireTime = expireTime;
     }
 
-    public boolean isExpired(){
+    public boolean exist(){
         return LocalDateTime.now().isAfter(expireTime);
     }
 

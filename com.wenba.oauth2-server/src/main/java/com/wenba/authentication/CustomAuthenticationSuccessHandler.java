@@ -25,7 +25,7 @@ import java.io.IOException;
 /**
  * @author：tongrongbing
  * @date：created in 2020/7/4 18:25
- * @description：
+ * @description：   自定义成功处理器
  */
 @Component("successHandler")
 @Slf4j
@@ -76,7 +76,7 @@ public class CustomAuthenticationSuccessHandler extends SavedRequestAwareAuthent
         OAuth2Authentication oAuth2Authentication = new OAuth2Authentication(oAuth2Request, authentication);
         OAuth2AccessToken token = authorizationServerTokenServices.createAccessToken(oAuth2Authentication);
         response.setContentType("application/json;charset=UTF-8");
-        response.getWriter().write(JSON.toJSONString(token));
+        response.getWriter().write(JSON.toJSONString(authentication));
     }
 
 
