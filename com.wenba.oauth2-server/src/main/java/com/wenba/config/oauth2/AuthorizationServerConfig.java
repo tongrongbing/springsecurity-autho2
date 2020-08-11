@@ -16,6 +16,7 @@ import org.springframework.security.oauth2.provider.client.JdbcClientDetailsServ
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.code.JdbcAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 
 import javax.sql.DataSource;
 
@@ -39,6 +40,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
     @Autowired
     private TokenStore tokenStore;  //  令牌管理策略
+
+    @Autowired
+    private JwtAccessTokenConverter jwtAccessTokenConverter;
 
     // 使用 JDBC 方式管理客户端信息
     @Bean
@@ -92,7 +96,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         //刷新令牌获取新令牌时需要
         endpoints.userDetailsService(customUserDetailsService);
         // 令牌管理策略
-        endpoints.tokenStore(tokenStore);
+        endpoints.tokenStore(tokenStore)
+                .accessTokenConverter(jwtAccessTokenConverter); // 利用jwt来管理令牌
         // 授权码管理 针对授权码模式有效，会将授权码放到 auth_code 表，授权后就会删除它
         endpoints.authorizationCodeServices(jdbcAuthorizationCodeServices());
     }

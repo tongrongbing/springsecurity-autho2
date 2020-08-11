@@ -29,8 +29,8 @@ public class AuthorizationResourceServerConfig extends ResourceServerConfigurerA
     public void configure(HttpSecurity http) throws Exception {
         formAuthenticationConfig.configure(http); // 表单认证
         http
-                .apply(validateCodeSecurityConfig)
-                .and()
+                /*.apply(validateCodeSecurityConfig)
+                .and()*/
         .authorizeRequests()
                 .antMatchers(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE,
                         "/imooc-signIn.html","/auth/authentication/form",

@@ -5,6 +5,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.sql.DataSource;
 
@@ -16,6 +18,7 @@ import javax.sql.DataSource;
 @Configuration
 public class TokenStoreConfig {
 
+    private static final String SIGNINGKEY = "wenba.com";
    /* @Autowired
     private RedisConnectionFactory redisConnectionFactory;  // redis 管理token
     */
@@ -26,6 +29,14 @@ public class TokenStoreConfig {
     @Bean
     public TokenStore tokenStore(){
         //return new RedisTokenStore(redisConnectionFactory);  // redis管理令牌
-        return new JdbcTokenStore(dataSource);
+        //return new JdbcTokenStore(dataSource); // jdbc管理令牌
+        return new JwtTokenStore(jwtAccessTokenConverter());
+    }
+
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter(){
+        JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
+        tokenConverter.setSigningKey(SIGNINGKEY);
+        return tokenConverter;
     }
 }
