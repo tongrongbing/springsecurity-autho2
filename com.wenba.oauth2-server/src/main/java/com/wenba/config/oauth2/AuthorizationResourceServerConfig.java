@@ -1,5 +1,6 @@
 package com.wenba.config.oauth2;
 import com.wenba.config.FormAuthenticationConfig;
+import com.wenba.config.SmsCodeAuthenticationSecurityConfig;
 import com.wenba.config.ValidateCodeSecurityConfig;
 import com.wenba.constants.SecurityConstants;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,20 @@ public class AuthorizationResourceServerConfig extends ResourceServerConfigurerA
     @Autowired
     private ValidateCodeSecurityConfig validateCodeSecurityConfig;
 
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
     @Override
     public void configure(HttpSecurity http) throws Exception {
         formAuthenticationConfig.configure(http); // 表单认证
         http
-                /*.apply(validateCodeSecurityConfig)
-                .and()*/
+                .apply(validateCodeSecurityConfig)  //校验码安全配置
+                .and()
+                .apply(smsCodeAuthenticationSecurityConfig)  // 短信验证码安全配置
+                .and()
         .authorizeRequests()
                 .antMatchers(SecurityConstants.DEFAULT_SIGN_IN_PROCESSING_URL_MOBILE,
-                        "/imooc-signIn.html","/auth/authentication/form",
+                        "/imooc-signIn.html",
                         SecurityConstants.DEFAULT_VALIDATE_CODE_URL_PREFIX + "/*").permitAll()
                 .anyRequest()
                 .authenticated()
